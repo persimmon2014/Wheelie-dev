@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network version="1.3" name="intersection-test" lane_width="2.5" xmlns:xi="http://www.w3.org/2001/XInclude" gamma="0.5">
+  <roads>
+    <road id="road0" name="S Columbia Street">
+      <line_rep>
+	<points>
+	  -150.0 0.0 0.0 0.0
+	  150.0 0.0 0.0 0.0
+	</points>
+      </line_rep>
+    </road>
+  </roads>
+  <lanes>
+    <lane id="lane0a" speedlimit="33.33333">
+      <start>
+	<dead_end/>
+      </start>
+      <end>
+	<lane_ref ref="lane0b"/>
+      </end>
+      <road_intervals>
+	<interval>
+	  <base>
+	    <road_membership parent_road_ref="road0" interval_start="0.0" interval_end="0.667" lane_position="0.0"/>
+	  </base>
+	</interval>
+      </road_intervals>
+      <adjacency_intervals>
+	<left>
+	  <interval>
+	    <base>
+	      <lane_adjacency/>
+	    </base>
+	  </interval>
+	</left>
+	<right>
+	  <interval>
+	    <base>
+	      <lane_adjacency/>
+	    </base>
+	  </interval>
+	</right>
+      </adjacency_intervals>
+    </lane>
+    <lane id="lane0b" speedlimit="33.3333">
+      <start>
+	<lane_ref ref="lane0a"/>
+      </start>
+      <end>
+	<!-- <lane_ref ref="lane0c"/> -->
+	<dead_end/>
+      </end>
+      <road_intervals>
+    	<interval>
+    	  <base>
+    	    <road_membership parent_road_ref="road0" interval_start="0.667" interval_end="1.0" lane_position="0.0"/>
+    	  </base>
+    	</interval>
+      </road_intervals>
+      <adjacency_intervals>
+    	<left>
+    	  <interval>
+    	    <base>
+    	      <lane_adjacency/>
+    	    </base>
+    	  </interval>
+    	</left>
+    	<right>
+    	  <interval>
+    	    <base>
+    	      <lane_adjacency/>
+    	    </base>
+    	  </interval>
+    	</right>
+      </adjacency_intervals>
+    </lane>
+    <!-- <lane id="lane0c" speedlimit="33.3333"> -->
+    <!--   <start> -->
+    <!-- 	<lane_ref ref="lane0b"/> -->
+    <!--   </start> -->
+    <!--   <end> -->
+    <!-- 	<dead_end/> -->
+    <!--   </end> -->
+    <!--   <road_intervals> -->
+    <!-- 	<interval> -->
+    <!-- 	  <base> -->
+    <!-- 	    <road_membership parent_road_ref="road0" interval_start="0.667" interval_end="1.0" lane_position="0.0"/> -->
+    <!-- 	  </base> -->
+    <!-- 	</interval> -->
+    <!--   </road_intervals> -->
+    <!--   <adjacency_intervals> -->
+    <!-- 	<left> -->
+    <!-- 	  <interval> -->
+    <!-- 	    <base> -->
+    <!-- 	      <lane_adjacency/> -->
+    <!-- 	    </base> -->
+    <!-- 	  </interval> -->
+    <!-- 	</left> -->
+    <!-- 	<right> -->
+    <!-- 	  <interval> -->
+    <!-- 	    <base> -->
+    <!-- 	      <lane_adjacency/> -->
+    <!-- 	    </base> -->
+    <!-- 	  </interval> -->
+    <!-- 	</right> -->
+    <!--   </adjacency_intervals> -->
+    <!-- </lane> -->
+  </lanes>
+  <intersections>
+  </intersections>
+  </network>

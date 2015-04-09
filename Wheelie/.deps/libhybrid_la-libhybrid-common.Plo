@@ -1,0 +1,3 @@
+libhybrid_la-libhybrid-common.lo: libhybrid-common.cpp ../config.h
+
+../config.h:
