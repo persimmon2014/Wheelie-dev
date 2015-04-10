@@ -288,9 +288,14 @@ namespace hybrid
         car   get_merging_leader(float param, const lane* other_lane);
         car   get_merging_follower(float param, const lane* other_lane);
 
-        // macro data
+        /**
+	 * Calculating the actuall cell size and number of cells of the current lane
+	 * @param h_suggest suggested cell size 
+	 */
         void  macro_initialize(const float h_suggest);
-        void  macro_instantiate(simulator &sim);
+        
+	
+	void  macro_instantiate(simulator &sim);
         bool  macro_find_first(float &param, const simulator &sim) const;
         bool  macro_find_last(float &param, const simulator &sim) const;
         void  macro_distance_to_car(float &distance, float &velocity, const float distance_max, const simulator &sim) const;
@@ -414,8 +419,20 @@ namespace hybrid
 
         float sec_since_car;
 
-        // macro
+        /**
+	 * initialize a macro simulation
+	 * @param gamma the gamma for calculating u_eq
+	 * @param h_suggest suggested cell size
+	 * @param relaxation the relaxiation factor
+	 */
         void  macro_initialize(float gamma, float h_suggest, float relaxation);
+	
+	/**
+	 * initialize a macro simulation
+	 * @param gamma the gamma for calculating u_eq
+	 * @param h_suggest suggested cell size
+	 * @param relaxation the relaxiation factor
+	 */
         void  macro_re_initialize(float gamma, float h_suggest, float relaxation);
         void  macro_cleanup();
         void  convert_cars(sim_t sim_mask);

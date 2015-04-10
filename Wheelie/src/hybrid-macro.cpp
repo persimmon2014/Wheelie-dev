@@ -506,7 +506,8 @@ namespace hybrid
         min_h             = std::numeric_limits<float>::max();
 
         N = 0;
-        // initialize new lanes, compute how many cells to allocate
+	
+        // Initialize new lanes, compute how many cells to allocate
         for(lane &l: lanes)
         {
             if(l.fictitious)
