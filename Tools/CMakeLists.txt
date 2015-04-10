@@ -15,11 +15,10 @@ project(Tools)
 
 # Adds an executable for unit tests.
 add_executable(hybrid-viewer hybrid-viewer.cpp)
-add_executable(hybrid hybrid.cpp)
+#add_executable(hybrid hybrid.cpp)
 
 # Other library includes
-
-include_directories(${CMAKE_SOURCE_DIR}/Roadie/include/)
+include_directories(/usr/local/include/Roadie/)
 include_directories(${CMAKE_SOURCE_DIR}/Wheelie/include/)
 include_directories(/usr/include/glibmm-2.4/)
 include_directories(/usr/lib/x86_64-linux-gnu/glibmm-2.4/include/)
@@ -33,7 +32,7 @@ include_directories(/usr/lib/libxml++-2.6/include/)
 
 # And links
 set (EXTERNAL_LIBS
-  ${CMAKE_SOURCE_DIR}/Roadie/lib/libRoadie.so
+  /usr/local/lib/libRoadie.so
   ${CMAKE_SOURCE_DIR}/Wheelie/lib/libWheelie.so
   /usr/lib/x86_64-linux-gnu/libglibmm-2.4.so
   /usr/lib/libxml++-2.6.so
@@ -52,7 +51,7 @@ set (EXTERNAL_LIBS
 #find_package(Threads)
 
 target_link_libraries(hybrid-viewer ${EXTERNAL_LIBS})
-target_link_libraries(hybrid ${EXTERNAL_LIBS})
+#target_link_libraries(hybrid ${EXTERNAL_LIBS})
 
 # Turns on the debugging information.
 # TODO This should have an option to turn off.

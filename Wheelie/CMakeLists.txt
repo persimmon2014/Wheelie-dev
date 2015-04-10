@@ -53,7 +53,7 @@ set_target_properties(Wheelie PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE
 
 # Other library includes
 include_directories(./include/)
-include_directories(${CMAKE_SOURCE_DIR}/Roadie/include/)
+include_directories(/usr/local/include/Roadie/)
 include_directories(/usr/include/glibmm-2.4/)
 include_directories(/usr/lib/x86_64-linux-gnu/glibmm-2.4/include/)
 include_directories(/usr/include/glib-2.0/)
@@ -65,7 +65,7 @@ include_directories(/usr/lib/libxml++-2.6/include/)
 # include_directories(/usr/include/libxml2/)
 
 set (EXTERNAL_LIBS
-  ${CMAKE_SOURCE_DIR}/Roadie/lib/libRoadie.so
+  /usr/local/lib/libRoadie.so
   /usr/lib/x86_64-linux-gnu/libglibmm-2.4.so
   /usr/lib/libxml++-2.6.so
   /usr/lib/x86_64-linux-gnu/libboost_system.so
