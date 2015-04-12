@@ -76,7 +76,7 @@ namespace hybrid
     struct car
     {
         car() : id(0)
-       {
+        {
             // Assign some reasonable defaults for micro parameters.
             p_s1 = 1;
             p_delta = 4;
@@ -91,7 +91,8 @@ namespace hybrid
 
             velDist = 1;
             offsetNoise = 0;
-       }
+        }
+        
         car(const size_t in_id, const float in_position,
             const float in_velocity, const float in_acceleration)
             : id(in_id), position(in_position),
@@ -121,7 +122,7 @@ namespace hybrid
             offsetNoise = std::min(velDist, .05f);
         }
 
-        //common data
+        // Common data
         size_t id;
         float  position;
         float  velocity;
@@ -139,13 +140,13 @@ namespace hybrid
         float p_a;
         float p_b;
 
-       float velDist;
-       float offsetNoise;
+        float velDist;
+        float offsetNoise;
 
-       inline bool isMerging()
-       {
-          return (other_lane_membership.other_lane != 0);
-       }
+        inline bool isMerging()
+        {
+	  return (other_lane_membership.other_lane != 0);
+        }
 
 
         // micro data
@@ -164,8 +165,8 @@ namespace hybrid
         void integrate(float timestep, const lane &l, float lane_width);
         void carticle_integrate(float timestep, const lane &l, float lane_width);
         void check_if_valid_acceleration(lane& l, float timestep);
-       car get_full_leader_from_all(const lane* l, const float param, const simulator& sim);
-       car get_full_follower_from_all(const lane* l, const float param, const simulator& sim);
+        car get_full_leader_from_all(const lane* l, const float param, const simulator& sim);
+        car get_full_follower_from_all(const lane* l, const float param, const simulator& sim);
         float check_lane_fully(const lane* l, const float param, const simulator& sim);
         float getLaneDeccel(const lane* l, const float param, const float timestep, const simulator& sim);
         float getMyAccel(const lane* l, const float param, const float timestep, const simulator& sim);
@@ -174,8 +175,6 @@ namespace hybrid
         mat4x4f point_frame(const hwm::lane *l, float lane_width) const;
         vec3f point_theta(float &theta, const hwm::lane *l, float lane_width) const;
         void write_record(std::ostream &o, const lane &l, const float lane_width) const;
-
-        // macro data
     };
 
     struct car_interp
@@ -294,7 +293,10 @@ namespace hybrid
 	 */
         void  macro_initialize(const float h_suggest);
         
-	
+	/**
+	 * Instatiate cars via inhomogeneous possion process
+	 * @param sim pointer to the sim object
+	 */
 	void  macro_instantiate(simulator &sim);
         bool  macro_find_first(float &param, const simulator &sim) const;
         bool  macro_find_last(float &param, const simulator &sim) const;
@@ -345,17 +347,31 @@ namespace hybrid
             std::vector<lane::serial_state> lane_states;
         };
 
-        /*
-	 * Constructor
+        /**
+	 * Constructor, calculate how many lanes and create them
 	 * @param net hwm network
-	 * @param length car length
-	 * @param rear_axle length from car rear_axle to back
+	 * @param length car length (e.g. 4.5)
+	 * @param rear_axle length from car back to rear axle, a positive value (e.g. 1)
 	 */
         simulator(hwm::network *net, float length, float rear_axle);
 
+	/**
+	 * Destructor
+	 */
         ~simulator();
-        void  initialize();
+	
+        //void  initialize();
+	
+	/**
+	 * the inverse value of the length from rear bumper to rear axle 
+	 * @return the rear_bumper_offset which is a negative value (e.g. the distance from rear bumper to real axle is 1, this method returns -1)
+	 */
         float rear_bumper_offset()  const;
+	
+	/**
+	 * car length - length from car back to real axle (e.g. 4.5 - 1 = 3.5) 
+	 * @return front_bumper_offset
+	 */
         float front_bumper_offset() const;
         void  car_swap();
 
@@ -371,8 +387,20 @@ namespace hybrid
 
         car   make_car(const float position, const float velocity, const float acceleration);
 
+	
+	/**
+	 * get an actual lane not a fictitious one according to the lane name
+	 * @param s target lane name
+	 * @return the lane
+	 */
         lane       &get_lane_by_name(const str &s);
-        const lane &get_lane_by_name(const str &s) const;
+        
+	/**
+	 * get an actual lane not a fictitious one according to the lane name
+	 * @param s target lane name
+	 * @return the lane
+	 */
+	const lane &get_lane_by_name(const str &s) const;
 
         size_t ncars() const;
 
@@ -394,15 +422,19 @@ namespace hybrid
         float                time;
         base_generator_type *generator;
         boost::uniform_real<> *uni_dist;
-        typedef boost::variate_generator<base_generator_type&,
-            boost::uniform_real<> > rand_gen_t;
+        typedef boost::variate_generator<base_generator_type&, boost::uniform_real<> > rand_gen_t;
         rand_gen_t          *uni;
         size_t               car_id_counter;
         boundaries           boundary_conditions;
 
-        // micro
-        void   micro_initialize(const float a_max, const float a_pref, const float v_pref,
-                                const float delta);
+        /**
+	 * initialize a micro simulation
+	 * @param a_max maximum acceleration
+	 * @param a_pref preferred acceleration
+	 * @param v_pref preferred velocity
+	 * @param delta the delta value
+	 */
+        void   micro_initialize(const float a_max, const float a_pref, const float v_pref, const float delta);
         void   micro_cleanup();
         //    void   settle(const float timestep);
         //    float acceleration(const float leader_velocity, const float follower_velocity, const float s_limit, const float distance) const;

@@ -387,15 +387,16 @@ namespace hybrid
         for(car &c: current_cars())
         {
 	    //std::cout<<"car_back: "<<sim.rear_bumper_offset()<<" car_front: "<<sim.front_bumper_offset()<<std::endl;
+	  
+	    // car back bumper and front bumper positions, c.position is a relative value comparing to the lane length
             const float car_back  = c.position+sim.rear_bumper_offset()*inv_length;
             const float car_front = c.position+sim.front_bumper_offset()*inv_length;
 	    
             const int start_cell = which_cell(car_back);
             const int end_cell   = which_cell(car_front);
-	    std::cout<<"start_cell: "<<start_cell<<" end_cell: "<<end_cell<<std::endl;
+	    // std::cout<<"start_cell: "<<start_cell<<" end_cell: "<<end_cell<<std::endl;
 	    
-	   // std::cout<<"c.velocity: "<<c.velocity<<std::endl;
-
+	    // std::cout<<"c.velocity: "<<c.velocity<<std::endl;
             if(start_cell == end_cell)
             {
                 float coverage       = sim.car_length*inv_h; // car length / cell size
@@ -408,16 +409,17 @@ namespace hybrid
             if(start_cell >= 0)
             {
                 float start_coverage = (start_cell+1) - car_back*N;
+		std::cout<<"s_c: "<<start_cell+1<<" "<<car_back*N<<" "<<(start_cell+1) - car_back*N<<std::endl;
                 q[start_cell].rho() += start_coverage;
                 q[start_cell].y()   += start_coverage*c.velocity;
 		//std::cout<<"q[start_cell].y(): "<<q[start_cell].y()<<std::endl;
             }
 
+            // unlikely to be executed since car is smaller than half length of a cell size
             for(int i = start_cell+1; i < end_cell-1; ++i)
             {
                 q[i].rho() = 1.0f;
                 q[i].y()   = c.velocity;
-		//std::cout<<"q[i].y(): "<<q[i].y()<<std::endl;
             }
 
             if(end_cell < static_cast<int>(N))
@@ -569,8 +571,10 @@ namespace hybrid
 
     void simulator::convert_cars(const sim_t sim_mask)
     {
+        // MACRO = 1, MICRO = 2
         for(lane &l: lanes)
         {
+	    //std::cout<<l.sim_type<<" "<<sim_mask<<" "<<(l.sim_type & sim_mask)<<std::endl;
             if(l.sim_type & sim_mask && !l.fictitious)
                 l.clear_macro();
         }

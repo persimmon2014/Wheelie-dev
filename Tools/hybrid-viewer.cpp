@@ -478,7 +478,6 @@ int main(int argc, char *argv[])
     s.macro_initialize(0.5, 2.1*4.5, 0.0f);
     
     
-
     {
         hybrid::lane &l = s.get_lane_by_name("lane0b");
         l.sim_type = hybrid::MICRO;
@@ -489,13 +488,12 @@ int main(int argc, char *argv[])
         for (int i = 0; i < cars_per_lane; i++)
         {
             //TODO Just creating some cars here...
-            l.current_cars().push_back(s.make_car(p, 10, 0)); // position, velocity and acceleration
+            l.current_cars().push_back(s.make_car(p, 10, 0)); // position (parametric value of rear axle position / lane length), velocity and acceleration
 
             //Cars need a minimal distance spacing
             p += (25.0 * l.inv_length);
 	    
-	    
-            if(p + s.front_bumper_offset()*l.inv_length >= 1.0)
+            if(p + s.front_bumper_offset()*l.inv_length >= 1.0) // if the last car rear axle position + the front bumper offset >= 1.0, stop making new cars
                 break;
         }
     }

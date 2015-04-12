@@ -348,14 +348,13 @@ namespace hybrid
       car_id_counter(1),
       q_base(0),
       rs_base(0)
-  {
-     // Initialize micro parameters
+  {    
+    assert(hnet);
+    
+    // Initialize micro parameters
     generator = new base_generator_type(42ul);
     uni_dist  = new boost::uniform_real<>(0,1);
-    uni       = new boost::variate_generator<base_generator_type&, boost::uniform_real<> >(*generator, *uni_dist); // weizi: what's this?
-
-    //std::cout<<"fda:"<<uni<<std::endl;
-    assert(hnet);
+    uni       = new boost::variate_generator<base_generator_type&, boost::uniform_real<> >(*generator, *uni_dist);
 
     // figure out how many lanes to create
     size_t lane_count = hnet->lanes.size();
@@ -367,26 +366,37 @@ namespace hybrid
       }
     }
 
-    // create them
+    // Intiailize lanes structure which should first consist of actual lanes and then fictitious lanes
     lanes.resize(lane_count);
-
     float                       min_len         = std::numeric_limits<float>::max();
     float                       max_speedlimit  = -std::numeric_limits<float>::max();
+    
+    // First Intiailize actual lanes
     std::vector<lane>::iterator current         = lanes.begin();
     for(hwm::lane_map::iterator hwm_current = hnet->lanes.begin();
-        hwm_current                            != hnet->lanes.end() && current != lanes.end();
+        hwm_current                        != hnet->lanes.end() && current != lanes.end();
         ++current, ++hwm_current)
     {
+      //std::cout<<hwm_current->second.id<<std::endl;
       current->initialize(&(hwm_current->second));
-
       current->fictitious = false;
+      
+      //std::cout<<current->length<<std::endl;
       min_len             = std::min(current->length, min_len);
       max_speedlimit      = std::max(current->speedlimit(), max_speedlimit);
     }
 
+    
+    if(min_len > 1e+5) {
+      std::cerr<<"Min length of regular lane is too big, check code instead!"<<std::endl;
+      exit(0);
+      
+    }
+    
     std::cout << "Min length of regular lane is: " << min_len << std::endl;
     std::cout << "Max speedlimit of regular lane is: " << max_speedlimit << std::endl;
 
+    // Secondly initialize fictitious lanes
     min_len = std::numeric_limits<float>::max();
     for(hwm::intersection_pair &ip: hnet->intersections)
     {
@@ -451,8 +461,6 @@ namespace hybrid
 
   const lane &simulator::get_lane_by_name(const str &s) const
   {
-        
-    
     const hwm::lane_map::iterator res(hnet->lanes.find(s));
     if(res == hnet->lanes.end())
       throw std::runtime_error("No such lane!");

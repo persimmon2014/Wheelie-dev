@@ -1003,7 +1003,7 @@ namespace hybrid
 
     void simulator::compute_accelerations(const float timestep)
     {
-        BOOST_FOREACH(lane &l, lanes)
+        for(lane &l: lanes)
         {
             if (l.is_micro() && l.parent->active)
                 l.compute_lane_accelerations(timestep, *this);
@@ -1028,11 +1028,11 @@ namespace hybrid
         compute_accelerations(timestep);
 
         // Move cars forward.
-        BOOST_FOREACH(lane &l, lanes)
+        for(lane &l: lanes)
         {
             if(l.is_micro() && l.parent->active)
             {
-                BOOST_FOREACH(car &c, l.current_cars())
+                for(car &c: l.current_cars())
                 {
                     c.integrate(timestep, l, hnet->lane_width);
                 }
@@ -1040,11 +1040,11 @@ namespace hybrid
         }
 
         // Move cars to next lane if they move out of the current lane.
-        BOOST_FOREACH(lane &l, lanes)
+        for(lane &l: lanes)
         {
             if(l.is_micro() && l.parent->active)
             {
-                BOOST_FOREACH(car &c, l.current_cars())
+                for(car &c: l.current_cars())
                 {
                     lane* destination_lane = &l;
                     lane* curr = &l;
@@ -1098,11 +1098,11 @@ namespace hybrid
     void simulator::carticle_update(const float timestep)
     {
         // Move cars forward.
-        BOOST_FOREACH(lane &l, lanes)
+        for(lane &l: lanes)
         {
             if(l.is_micro() && l.parent->active)
             {
-                BOOST_FOREACH(car &c, l.current_cars())
+                for(car &c: l.current_cars())
                 {
                     c.carticle_integrate(timestep, l, hnet->lane_width);
                 }
@@ -1110,11 +1110,11 @@ namespace hybrid
         }
 
         // Move cars to next lane if they move out of the current lane.
-        BOOST_FOREACH(lane &l, lanes)
+        for(lane &l: lanes)
         {
             if(l.is_micro() && l.parent->active)
             {
-                BOOST_FOREACH(car &c, l.current_cars())
+                for(car &c: l.current_cars())
                 {
                     lane* destination_lane = &l;
                     lane* curr = &l;
