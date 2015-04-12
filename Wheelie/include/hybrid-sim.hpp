@@ -305,14 +305,29 @@ namespace hybrid
         float velocity(float pos, float gamma) const;
         float collect_riemann(const float gamma, const float inv_gamma);
         void  update         (const float dt,    simulator  &sim);
-        void  clear_macro();
+        
+	/**
+	 * Set the p=[rho,y] for all cells in the current lane to 0
+	 */
+	void  clear_macro();
+	
+	/**
+	 * Iterate each car, use the car back and front positions to calculate density and flow of each cell
+	 * @param sim pointer to the sim object
+	 */
         void  convert_cars(const simulator &sim);
-        void  fill_y(const float gamma);
+        
+	/**
+	 * Calculate the flow y given the density and intial flow values
+	 * @param gamma the gamma value
+	 */
+	void  fill_y(const float gamma);
 
-        float                         h;
-        float                         inv_h;
-        size_t                        N;
-        arz<float>::q                *q;
+	
+        float                         h; // cell size
+        float                         inv_h; // inverse of the cell size
+        size_t                        N; // number of cells
+        arz<float>::q                *q; 
         arz<float>::riemann_solution *rs;
     };
 

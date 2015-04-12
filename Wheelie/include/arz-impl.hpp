@@ -82,6 +82,7 @@ inline void arz<T>::q::fix()
     {
         rho() = 1.0-epsilon();
     }
+    
     if(y() > -epsilon())
         y() = 0.0;
 

@@ -15,7 +15,7 @@ project(Tools)
 
 # Adds an executable for unit tests.
 add_executable(hybrid-viewer hybrid-viewer.cpp)
-#add_executable(hybrid hybrid.cpp)
+add_executable(hybrid hybrid.cpp)
 
 # Other library includes
 include_directories(/usr/local/include/Roadie/)
@@ -51,7 +51,7 @@ set (EXTERNAL_LIBS
 #find_package(Threads)
 
 target_link_libraries(hybrid-viewer ${EXTERNAL_LIBS})
-#target_link_libraries(hybrid ${EXTERNAL_LIBS})
+target_link_libraries(hybrid ${EXTERNAL_LIBS})
 
 # Turns on the debugging information.
 # TODO This should have an option to turn off.

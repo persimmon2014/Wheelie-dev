@@ -409,7 +409,7 @@ namespace hybrid
             if(start_cell >= 0)
             {
                 float start_coverage = (start_cell+1) - car_back*N;
-		std::cout<<"s_c: "<<start_cell+1<<" "<<car_back*N<<" "<<(start_cell+1) - car_back*N<<std::endl;
+		//std::cout<<"s_c: "<<start_cell+1<<" "<<car_back*N<<" "<<(start_cell+1) - car_back*N<<std::endl;
                 q[start_cell].rho() += start_coverage;
                 q[start_cell].y()   += start_coverage*c.velocity;
 		//std::cout<<"q[start_cell].y(): "<<q[start_cell].y()<<std::endl;
@@ -438,7 +438,7 @@ namespace hybrid
         for(size_t i = 0; i < N; ++i)
         {
             if(q[i].rho() > 0.0) {
-                q[i].y() /= q[i].rho();
+                q[i].y() /= q[i].rho(); // to calculate u, which should be the second parameter to the following equation
 	    }
 	    
             q[i].y() = arz<float>::eq::y(q[i].rho(),
@@ -572,6 +572,7 @@ namespace hybrid
     void simulator::convert_cars(const sim_t sim_mask)
     {
         // MACRO = 1, MICRO = 2
+        // operate on the same type of simulator and sim_mask
         for(lane &l: lanes)
         {
 	    //std::cout<<l.sim_type<<" "<<sim_mask<<" "<<(l.sim_type & sim_mask)<<std::endl;

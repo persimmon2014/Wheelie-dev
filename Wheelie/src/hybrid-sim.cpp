@@ -577,7 +577,7 @@ namespace hybrid
 
   void simulator::advance_intersections(float dt)
   {
-    BOOST_FOREACH(hwm::intersection_pair &ip, hnet->intersections)
+    for(hwm::intersection_pair &ip: hnet->intersections)
     {
       hwm::intersection &i = ip.second;
 
@@ -585,7 +585,7 @@ namespace hybrid
       if(i.locked || i.state_time > i.states[i.current_state].duration)
       {
         bool free = true;
-        BOOST_FOREACH(const hwm::lane_pair &lp, i.states[i.current_state].fict_lanes)
+        for(const hwm::lane_pair &lp: i.states[i.current_state].fict_lanes)
         {
           if(lp.second.user_data<lane>()->occupied())
           {

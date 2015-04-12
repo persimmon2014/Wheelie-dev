@@ -165,6 +165,8 @@ struct arz
         inline       T& y();
         /*@}*/
 
+	/** Make sure all rho and y values are valid
+         */
         void fix();
         bool check() const;
     };

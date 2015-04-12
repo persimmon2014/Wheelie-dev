@@ -195,8 +195,9 @@ public:
             glColor3f(1.0, 0.0, 1.0);
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             glEnable(GL_LIGHTING);
-
             glEnable(GL_TEXTURE_2D);
+	    
+	    //draw either rho or y fields
             std::vector<vec4f> colors;
             for(hybrid::lane &l: sim->lanes)
             {
@@ -235,6 +236,7 @@ public:
             }
             glDisable(GL_TEXTURE_2D);
 
+	    // draw cars
             for(hybrid::lane &l: sim->lanes)
             {
                 if(!l.parent->active)
@@ -353,7 +355,7 @@ public:
             case 'n':
                 if(sim)
                 {
-                    sim->advance_intersections(0.5);
+                    sim->advance_intersections(0.5); // each time advance the time 0.5 if it finally exceeds the duration of a state, the next state will take place
                 }
                 break;
             case ' ':
@@ -381,7 +383,7 @@ public:
             case 'c':
                 if(sim)
                 {
-                    sim->convert_cars(hybrid::MACRO);
+                    sim->convert_cars(hybrid::MACRO); 
                 }
                 break;
             case 'm':
@@ -521,6 +523,7 @@ int main(int argc, char *argv[])
 
     s.convert_cars(hybrid::MACRO);
 
+    // weizi: remove all the cars, because the initial conditions have been set?
     for(hybrid::lane &l: s.lanes)
     {
         if(l.is_macro())
