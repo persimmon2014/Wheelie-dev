@@ -127,7 +127,7 @@ namespace pproc
     {
         typename pc_data<T>::arr_t data(n);
         T x = 0;
-        BOOST_FOREACH(T &e, data)
+        for(T &e: data)
         {
             e  = 0.5*(func(x) + func(x+dx));
             x += dx;
@@ -140,7 +140,7 @@ namespace pproc
     {
         const T inv_dx = 1/dx;
         typename pc_data<T>::arr_t data(n, 0);
-        BOOST_FOREACH(const T &o, obs)
+        for(const T &o: obs)
         {
             if(o < 0.0)
                 continue;

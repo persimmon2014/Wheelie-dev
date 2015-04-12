@@ -227,6 +227,7 @@ namespace hybrid
         lane *upstream = upstream_lane();
         if(!upstream)
         {
+	    // deal with situations having no inflow
             rs[0].starvation_riemann(*fq[0],
                                      my_speedlimit,
                                      inv_speedlimit,
@@ -298,6 +299,7 @@ namespace hybrid
             lane *downstream = downstream_lane();
             if(!downstream)
             {
+	        // deal with situations having no out flow
                 rs[N].stop_riemann(*fq[0],
                                    my_speedlimit,
                                    inv_speedlimit,
@@ -594,6 +596,8 @@ namespace hybrid
     float simulator::macro_step(const float cfl)
     {
         float maxspeed = 0.0f;
+	
+	// get the maxspeed over all lanes
         for(lane &l: lanes)
         {
           if(l.is_macro() && l.parent->active && !l.fictitious)
@@ -606,6 +610,7 @@ namespace hybrid
         if(maxspeed < arz<float>::epsilon())
             maxspeed = min_h;
 
+	// min dt is almost 0.5f, min_h is the minimum cell size
         const float dt = std::min(cfl*min_h/maxspeed, 0.5f);
 
         for(lane &l: lanes)

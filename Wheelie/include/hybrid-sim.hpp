@@ -273,7 +273,7 @@ namespace hybrid
         std::vector<car>  cars[2];
         sim_t             sim_type;
         bool              updated_flag;
-        bool              fictitious;
+        bool              fictitious; 
 
         void distance_to_car(float &distance, float &velocity, const float distance_max, const simulator &sim) const;
 
@@ -301,10 +301,30 @@ namespace hybrid
         bool  macro_find_first(float &param, const simulator &sim) const;
         bool  macro_find_last(float &param, const simulator &sim) const;
         void  macro_distance_to_car(float &distance, float &velocity, const float distance_max, const simulator &sim) const;
-        int   which_cell(float pos) const;
-        float velocity(float pos, float gamma) const;
-        float collect_riemann(const float gamma, const float inv_gamma);
-        void  update         (const float dt,    simulator  &sim);
+        
+	/**
+	 * Get the cell number accroding to specified position
+	 * @param pos a position (e.g. car back or front position) 
+	 * @return cell number
+	 */
+	int   which_cell(float pos) const;
+        
+	float velocity(float pos, float gamma) const;
+        
+	/**
+	 * Solve the riemann problem at boundaries
+	 * @param gamma the gamma value
+	 * @param inv_gamma the inverse gamma value
+	 * @return  maximum speed
+	 */
+	float collect_riemann(const float gamma, const float inv_gamma);
+        
+	/**
+	 * Advance the macro simulation to next time step
+	 * @param dt time step
+	 * @param sim pointer to the sim object
+	 */
+	void  update         (const float dt,    simulator  &sim);
         
 	/**
 	 * Set the p=[rho,y] for all cells in the current lane to 0
@@ -463,7 +483,6 @@ namespace hybrid
         float delta;
         float s1;
         float T;
-
         float sec_since_car;
 
         /**
@@ -481,10 +500,27 @@ namespace hybrid
 	 * @param relaxation the relaxiation factor
 	 */
         void  macro_re_initialize(float gamma, float h_suggest, float relaxation);
+	
+	/**
+	 * free q and qs pointers
+	 */
         void  macro_cleanup();
+	
+	/**
+	 * For each lane, first set the q=[rho,y] to 0, then use the position to calculate density and flow for each cell
+	 * and then use calculate y value
+	 * @param sim_mask type indicates MACRO or MICRO, for now only works for MACRO
+	 */
         void  convert_cars(sim_t sim_mask);
+	
+	/**
+	 * Advance to next macro simulation step 
+	 * @param cfl CFL condition to make sure forward euler stable
+	 * @return the minimum dt considering all lanes
+	 */
         float macro_step(const float cfl=1.0f);
 
+	
         arz<float>::q                *q_base;
         size_t                        N;
         arz<float>::riemann_solution *rs_base;

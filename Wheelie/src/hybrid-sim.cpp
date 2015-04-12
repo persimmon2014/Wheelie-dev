@@ -27,7 +27,7 @@ namespace hybrid
     }
     else
     {
-      std::cerr << "Warning: outbound not defined for " << lane_p << std::endl;
+      std::cerr << "Warning (get_dist_out): outbound not defined for " << lane_p << std::endl;
       assert(0);
       distance = 18;
     }
@@ -45,7 +45,7 @@ namespace hybrid
     else
     {
       velocity = 25;
-      std::cerr << "Warning: outbound not defined for " << lane_p << std::endl;
+      std::cerr << "Warning (get_vel_out): outbound not defined for " << lane_p << std::endl;
       assert(0);
     }
     return velocity;
@@ -69,7 +69,7 @@ namespace hybrid
     }
     else
     {
-      std::cerr << "Warning: outbound not defined for " << lane_p << std::endl;
+      std::cerr << "Warning (get_dist_in): outbound not defined for " << lane_p << std::endl;
       assert(0);
       distance = 18;
     }
@@ -306,7 +306,7 @@ namespace hybrid
                                                               network_state(s.hnet->serial())
   {
     lane_states.reserve(s.lanes.size());
-    BOOST_FOREACH(const lane &l, s.lanes)
+    for(const lane &l: s.lanes)
     {
       lane_states.push_back(l.serial());
     }
@@ -318,12 +318,12 @@ namespace hybrid
   car_interp::car_hash simulator::get_car_hash() const
   {
     car_interp::car_hash res;
-    BOOST_FOREACH(const lane &l, lanes)
+    for(const lane &l: lanes)
     {
       if(!l.parent->active || !l.is_micro())
         continue;
 
-      BOOST_FOREACH(const car &c, l.current_cars())
+      for(const car &c: l.current_cars())
       {
         res.insert(car_interp::car_spatial(c, l.parent));
       }
@@ -381,7 +381,7 @@ namespace hybrid
       current->initialize(&(hwm_current->second));
       current->fictitious = false;
       
-      //std::cout<<current->length<<std::endl;
+      std::cout<<current->length<<std::endl;
       min_len             = std::min(current->length, min_len);
       max_speedlimit      = std::max(current->speedlimit(), max_speedlimit);
     }
@@ -518,7 +518,7 @@ namespace hybrid
       }
     }
 
-    BOOST_FOREACH(lane &l, lanes)
+    for(lane &l: lanes)
     {
       if(!l.updated_flag && l.active())
       {
@@ -561,7 +561,7 @@ namespace hybrid
     // fill in micro
     // convert_cars(MICRO);
 
-    // // macro step (also emit cars)
+    // macro step (also emit cars)
     float dt = macro_step(1.0f);
 
     // micro step
@@ -610,7 +610,7 @@ namespace hybrid
     bool POISSON = false;
     static const float MIN_SPEED_FRACTION = 0.7;
     static float rate               = 0.05;
-    BOOST_FOREACH(lane &l, lanes)
+    for(lane &l: lanes)
     {
       if(l.is_micro() && l.parent->start->network_boundary())
       {
@@ -719,7 +719,7 @@ namespace hybrid
     float noise_factor = 0.1;
     static const float MIN_SPEED_FRACTION = 0.7;
     static float rate               = 0.05;
-    BOOST_FOREACH(lane &l, lanes)
+    for(lane &l: lanes)
     {
       if (!l.active())
         continue;

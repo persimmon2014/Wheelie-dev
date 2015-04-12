@@ -482,11 +482,10 @@ inline void arz<T>::riemann_solution::lebaque_inhomogeneous_riemann(
 
 
 //     printf("demand_l:   %8.5f       supply_r:     %8.5f\n", demand_l, supply_r);
-
 //     printf("          q_l:        q_m_l:      q_m_r:      q_r\n");
 //     printf("rho:      %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.rho(),q_m_l.rho(), q_m_r.rho(),q_r.rho());
-//     printf("y:        %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.y(),  q_m_l.y(), q_m_r.y(),    q_r.y()  )
-// ;    printf("u_eq:    %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.u_eq(),q_m_l.u_eq(), q_m_r.u_eq(),q_r.u_eq());
+//     printf("y:        %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.y(),  q_m_l.y(), q_m_r.y(),    q_r.y()  );    
+//     printf("u_eq:    %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.u_eq(),q_m_l.u_eq(), q_m_r.u_eq(),q_r.u_eq());
 //     printf("u(real):  %8.5f       %8.5f       %8.5f       %8.5f\n", eq::u(q_l.rho(),q_l.y(), u_max_l, gamma), eq::u(q_m_l.rho(),q_m_l.y(), u_max_l, gamma), eq::u(q_m_r.rho(),q_m_r.y(), u_max_r, gamma), eq::u(q_r.rho(),q_r.y(), u_max_r, gamma));
 //     printf("u:        %8.5f       %8.5f       %8.5f       %8.5f\n", q_l.u(),  q_m_l.u(), q_m_r.u(),    q_r.u()  );
 //     printf("lambda_0: %8.5f       %8.5f       %8.5f       %8.5f\n",
@@ -494,11 +493,9 @@ inline void arz<T>::riemann_solution::lebaque_inhomogeneous_riemann(
 //            q_l.lambda_0(u_max_l, gamma),
 //            q_l.lambda_0(u_max_r, gamma),
 //            q_l.lambda_0(u_max_r, gamma));
-
 //     printf("flux_0:                %8.5f       %8.5f\n",
 //            q_m_l.flux_0(),
 //            q_m_r.flux_0());
-
 //     printf("flux_1:                %8.5f       %8.5f\n",
 //            q_m_l.flux_1(),
 //            q_m_r.flux_1());

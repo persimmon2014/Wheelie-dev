@@ -358,7 +358,7 @@ public:
                     sim->advance_intersections(0.5); // each time advance the time 0.5 if it finally exceeds the duration of a state, the next state will take place
                 }
                 break;
-            case ' ':
+            case 'x':
                 if(sim)
                 {
                     sim->hybrid_step();

@@ -1,4 +1,4 @@
-#include "libhybrid/arz.hpp"
+#include "arz.hpp"
 
 int main(int argc, char *argv[])
 {
