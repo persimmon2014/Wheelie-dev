@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<network version="1.3" name="intersection-test" lane_width="2.5" xmlns:xi="http://www.w3.org/2001/XInclude" gamma="0.5">
+<network name="single-lane-test" version="1.3" gamma="0.5" lane_width="3.5" xmlns:xi="http://www.w3.org/2001/XInclude">
   <roads>
-    <road id="road0" name="S Columbia Street">
-      <line_rep>
+    <road id="road0" name="road0">
+      <arc_line_rep>
 	<points>
 	  -150.0 0.0 0.0 0.0
 	  150.0 0.0 0.0 0.0
 	</points>
-      </line_rep>
+	<radii/>
+      </arc_line_rep>
     </road>
   </roads>
   <lanes>
@@ -27,18 +28,10 @@
       </road_intervals>
       <adjacency_intervals>
 	<left>
-	  <interval>
-	    <base>
-	      <lane_adjacency/>
-	    </base>
-	  </interval>
+	  <interval/>
 	</left>
 	<right>
-	  <interval>
-	    <base>
-	      <lane_adjacency/>
-	    </base>
-	  </interval>
+	  <interval/>
 	</right>
       </adjacency_intervals>
     </lane>
@@ -47,7 +40,6 @@
 	<lane_ref ref="lane0a"/>
       </start>
       <end>
-	<!-- <lane_ref ref="lane0c"/> -->
 	<dead_end/>
       </end>
       <road_intervals>
@@ -59,52 +51,13 @@
       </road_intervals>
       <adjacency_intervals>
     	<left>
-    	  <interval>
-    	    <base>
-    	      <lane_adjacency/>
-    	    </base>
-    	  </interval>
+    	  <interval/>
     	</left>
     	<right>
-    	  <interval>
-    	    <base>
-    	      <lane_adjacency/>
-    	    </base>
-    	  </interval>
+    	  <interval/>
     	</right>
       </adjacency_intervals>
     </lane>
-    <!-- <lane id="lane0c" speedlimit="33.3333"> -->
-    <!--   <start> -->
-    <!-- 	<lane_ref ref="lane0b"/> -->
-    <!--   </start> -->
-    <!--   <end> -->
-    <!-- 	<dead_end/> -->
-    <!--   </end> -->
-    <!--   <road_intervals> -->
-    <!-- 	<interval> -->
-    <!-- 	  <base> -->
-    <!-- 	    <road_membership parent_road_ref="road0" interval_start="0.667" interval_end="1.0" lane_position="0.0"/> -->
-    <!-- 	  </base> -->
-    <!-- 	</interval> -->
-    <!--   </road_intervals> -->
-    <!--   <adjacency_intervals> -->
-    <!-- 	<left> -->
-    <!-- 	  <interval> -->
-    <!-- 	    <base> -->
-    <!-- 	      <lane_adjacency/> -->
-    <!-- 	    </base> -->
-    <!-- 	  </interval> -->
-    <!-- 	</left> -->
-    <!-- 	<right> -->
-    <!-- 	  <interval> -->
-    <!-- 	    <base> -->
-    <!-- 	      <lane_adjacency/> -->
-    <!-- 	    </base> -->
-    <!-- 	  </interval> -->
-    <!-- 	</right> -->
-    <!--   </adjacency_intervals> -->
-    <!-- </lane> -->
   </lanes>
   <intersections>
   </intersections>

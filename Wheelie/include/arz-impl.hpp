@@ -144,6 +144,8 @@ arz<T>::full_q::full_q(const q &__restrict__ o,
     : base(o)
 {
     u_eq_ = eq::u_eq(base::rho(), u_max, gamma);
+    
+    // if rho is 0 take the u_max, otherwise calculate u
     u_    = base::rho() <= std::numeric_limits<T>::epsilon() ? u_max :
             std::max(base::y()/base::rho() + u_eq_,
                      static_cast<T>(0));
@@ -157,6 +159,8 @@ arz<T>::full_q::full_q(const T in_rho, const T in_u,
 {
     base::rho() = in_rho;
     u_eq_       = eq::u_eq(base::rho(), u_max, gamma);
+    
+    // take the smaller value of u_eq_ and in_u
     u_          = std::min(u_eq_, in_u);
     base::y()   = base::rho()*(u() - u_eq_);
     assert(check());
@@ -236,9 +240,10 @@ inline typename arz<T>::full_q arz<T>::centered_rarefaction(const full_q &__rest
 {
     full_q res;
 
+    res.rho()  = res.u() * res.u() / (gamma * gamma * u_max * u_max);
     res.u()    = gamma * (q_l.u() + u_max - q_l.u_eq()) / (gamma+1);
     res.u_eq() = u_max - res.u()/gamma;
-    res.rho()  = res.u() * res.u() / (gamma * gamma * u_max * u_max);
+    
     //    res.u_eq() = u_max - res.u()/(u_max*gamma);
     //    res.rho()  = std::pow( u_max - res.u_eq(), inv_gamma);
     res.y()    = res.rho()*(res.u() - res.u_eq());

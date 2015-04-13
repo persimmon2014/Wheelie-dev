@@ -37,8 +37,10 @@ static inline void blackbody(float *rgb, const float val)
    return;
 }
 
+// car length
 static const float CAR_LENGTH = 4.5f;
-//* This is the position of the car's axle from the FRONT bumper of the car
+
+// This is the position of the car's axle from the FRONT bumper of the car
 static const float CAR_REAR_AXLE = 3.5f;
 
 class fltkview : public Fl_Gl_Window
@@ -443,14 +445,21 @@ public:
 
 int main(int argc, char *argv[])
 {
-    std::cerr << libhybrid_package_string() << std::endl;
-    if(argc < 2)
+    //std::cerr << libhybrid_package_string() << std::endl;
+    
+  if(argc < 2)
     {
         std::cerr << "Usage: " << argv[0] << " <network file>" << std::endl;
         return 1;
     }
 
     hwm::network net(hwm::load_xml_network(argv[1], vec3f(1.0, 1.0, 1.0f)));
+    
+//     for(auto iter= net.lanes.begin(); iter != net.lanes.end(); iter++) {
+//       std::cout<<iter->first<<"-"<<iter->second.length()<<std::endl;
+//       
+//     }
+      
     net.build_intersections();
     net.build_fictitious_lanes();
     net.auto_scale_memberships();
@@ -480,28 +489,28 @@ int main(int argc, char *argv[])
     s.macro_initialize(0.5, 2.1*4.5, 0.0f);
     
     
+//     {
+//         hybrid::lane &l = s.get_lane_by_name("lane0b");
+//         l.sim_type = hybrid::MICRO;
+// 
+//         const int cars_per_lane = 0;
+//         double    p             = -s.rear_bumper_offset()*l.inv_length;
+// 
+//         for (int i = 0; i < cars_per_lane; i++)
+//         {
+//             //TODO Just creating some cars here...
+//             l.current_cars().push_back(s.make_car(p, 10, 0)); // position (parametric value of rear axle position / lane length), velocity and acceleration
+// 
+//             //Cars need a minimal distance spacing
+//             p += (25.0 * l.inv_length);
+// 	    
+//             if(p + s.front_bumper_offset()*l.inv_length >= 1.0) // if the last car rear axle position + the front bumper offset >= 1.0, stop making new cars
+//                 break;
+//         }
+//     }
+
     {
-        hybrid::lane &l = s.get_lane_by_name("lane0b");
-        l.sim_type = hybrid::MICRO;
-
-        const int cars_per_lane = 0;
-        double    p             = -s.rear_bumper_offset()*l.inv_length;
-
-        for (int i = 0; i < cars_per_lane; i++)
-        {
-            //TODO Just creating some cars here...
-            l.current_cars().push_back(s.make_car(p, 10, 0)); // position (parametric value of rear axle position / lane length), velocity and acceleration
-
-            //Cars need a minimal distance spacing
-            p += (25.0 * l.inv_length);
-	    
-            if(p + s.front_bumper_offset()*l.inv_length >= 1.0) // if the last car rear axle position + the front bumper offset >= 1.0, stop making new cars
-                break;
-        }
-    }
-
-    {
-        hybrid::lane &l = s.get_lane_by_name("lane0a");
+        hybrid::lane &l = s.get_lane_by_name("29416842_0"); // for ch-small.xml 29416842_0
         l.sim_type = hybrid::MACRO;
 
         const int cars_per_lane = 8;

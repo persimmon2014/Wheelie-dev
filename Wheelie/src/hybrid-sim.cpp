@@ -381,7 +381,7 @@ namespace hybrid
       current->initialize(&(hwm_current->second));
       current->fictitious = false;
       
-      std::cout<<current->length<<std::endl;
+      //std::cout<<current->length<<std::endl;
       min_len             = std::min(current->length, min_len);
       max_speedlimit      = std::max(current->speedlimit(), max_speedlimit);
     }

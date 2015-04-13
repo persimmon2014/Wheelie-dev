@@ -227,7 +227,7 @@ struct arz
         inline       T& u_eq();
         /*@}*/
 
-        /** Compute flux of this according to the ARZ equations.
+        /** Compute flux of this according to the ARZ equations, q=[rho, y] flux(q) = [rho*u, y*u]
          *  \returns A vector expression of the flux.
          */
         inline tvmet::XprVector<
@@ -288,7 +288,7 @@ struct arz
      *  Note that this is only valid when \f$\rho_l^{\gamma} + \frac{u_l - u_r }{u_{\max} > 0\f$
      *  \f[\rho_m = {\left(\rho_l^{\gamma} + \frac{u_l - u_r }{u_{\max}}\right)}^{\frac{1}{\gamma}}\f]
      *  \param q_l The left state.
-     *  \param q_l The right state.
+     *  \param q_r The right state.
      *  \param inv_u_max 1.0/u_max, the maximum velocity for the region.
      *  \param inv_gamma 1.0/gamma for the region.
      *  \return q_m as computed above.
