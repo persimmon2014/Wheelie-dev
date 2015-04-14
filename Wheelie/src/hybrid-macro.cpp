@@ -386,8 +386,12 @@ namespace hybrid
 
     void lane::convert_cars(const simulator &sim)
     {
+        // if all cars velocity have been set to 0 in the begining, this function only calculates rho for each cell
+        // rho = occupied cell space (by cars) / cell size
         for(car &c: current_cars())
         {
+	  
+	    //std::cout<<"Evenly distributed car on lane "<<this->parent->id<<std::endl;
 	    //std::cout<<"car_back: "<<sim.rear_bumper_offset()<<" car_front: "<<sim.front_bumper_offset()<<std::endl;
 	  
 	    // car back bumper and front bumper positions, c.position is a relative value comparing to the lane length
@@ -438,18 +442,23 @@ namespace hybrid
     void lane::fill_y(const float gamma)
     {
         for(size_t i = 0; i < N; ++i)
-        {
-            if(q[i].rho() > 0.0) {
+        { 
+	     
+            if(q[i].rho() > 0.0) {  
                 q[i].y() /= q[i].rho(); // to calculate u, which should be the second parameter to the following equation
 	    }
 	    
+	    // y = rho*(u - u_max*(1-pow(rho,gamma)))
+	    // if u is 0, then the initial y would be negative
             q[i].y() = arz<float>::eq::y(q[i].rho(),
                                          q[i].y(),
                                          speedlimit(),
                                          gamma);
 	    
+	    //std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
 	    //std::cout<<"Assign y for each lane: "<<q[i].rho()<<","<<q[i].y()<<","<<speedlimit()<<","<<gamma<<std::endl;
             q[i].fix();
+	    std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
         }
     }
 
@@ -559,7 +568,7 @@ namespace hybrid
             //     l.q[2].y()   = 1.5;
             // }
 	    
-	    // weizi: is this the place to fill all different velocity?
+	    // Initialize all y to 0
             l.fill_y(gamma);
         }
         std::cout << "min_h is " << min_h << std::endl;

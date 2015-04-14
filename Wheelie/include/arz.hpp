@@ -98,18 +98,18 @@ struct arz
                                    const T u_max,
                                    const T gamma);
 
-        /** Compute left-middle state in inhomogeneous speedlimit situations
-         *  \tparam T The arithmetic type for the computation.
-         *  \param[in] flow_m_r The flux 0 component of the right cell
-         *  \param[in] relv The difference between the left velocity and the left u_eq
-         *  \param[in] u_max_l The speed limit of the left cell
-         *  \param[in] gamma The gamma for the domain
-         *  \returns The above equation computed with the input params.
-         */
-        static inline T rho_m_l_solve(const T flow_m_r,
-                                      const T relv,
-                                      const T u_max_l,
-                                      const T gamma);
+//         /** Compute left-middle state in inhomogeneous speedlimit situations
+//          *  \tparam T The arithmetic type for the computation.
+//          *  \param[in] flow_m_r The flux 0 component of the right cell
+//          *  \param[in] relv The difference between the left velocity and the left u_eq
+//          *  \param[in] u_max_l The speed limit of the left cell
+//          *  \param[in] gamma The gamma for the domain
+//          *  \returns The above equation computed with the input params.
+//          */
+//         static inline T rho_m_l_solve(const T flow_m_r,
+//                                       const T relv,
+//                                       const T u_max_l,
+//                                       const T gamma);
     };
 
     /** Unknowns for the ARZ equations.

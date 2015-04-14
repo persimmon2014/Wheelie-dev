@@ -83,8 +83,9 @@ inline void arz<T>::q::fix()
         rho() = 1.0-epsilon();
     }
     
-    if(y() > -epsilon())
+    if(y() > -epsilon()) {
         y() = 0.0;
+    }
 
     assert(check());
 }
@@ -239,11 +240,10 @@ inline typename arz<T>::full_q arz<T>::centered_rarefaction(const full_q &__rest
                                                             const T                    inv_gamma)
 {
     full_q res;
-
-    res.rho()  = res.u() * res.u() / (gamma * gamma * u_max * u_max);
+  
     res.u()    = gamma * (q_l.u() + u_max - q_l.u_eq()) / (gamma+1);
     res.u_eq() = u_max - res.u()/gamma;
-    
+    res.rho()  = res.u() * res.u() / (gamma * gamma * u_max * u_max);
     //    res.u_eq() = u_max - res.u()/(u_max*gamma);
     //    res.rho()  = std::pow( u_max - res.u_eq(), inv_gamma);
     res.y()    = res.rho()*(res.u() - res.u_eq());

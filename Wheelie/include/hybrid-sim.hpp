@@ -507,8 +507,7 @@ namespace hybrid
         void  macro_cleanup();
 	
 	/**
-	 * For each lane, first set the q=[rho,y] to 0, then use the position to calculate density and flow for each cell
-	 * and then use calculate y value
+	 * For each lane, first set the q=[rho,y] to 0, then use the position to calculate density and flow for each cell and then use calculate y value
 	 * @param sim_mask type indicates MACRO or MICRO, for now only works for MACRO
 	 */
         void  convert_cars(sim_t sim_mask);

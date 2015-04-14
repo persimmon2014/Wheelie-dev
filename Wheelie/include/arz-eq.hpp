@@ -18,6 +18,9 @@ inline T arz<T>::eq::u(const T rho, const T y,
 {
     if(rho < epsilon())
         return u_max;
+    
+    //std::cout<<"y="<<y<<" rho="<<rho<<" y/rho="<<y/rho<<" u_max="<<u_max<<" gamma="<<gamma<<std::endl;
+    //std::cout<<"asdf "<<y/rho + u_eq(rho, u_max, gamma)<<std::endl;
     return std::max(y/rho + u_eq(rho, u_max, gamma), static_cast<T>(0)); // u is at least 0, no negative velocity allowed!
 }
 
@@ -27,6 +30,9 @@ inline T arz<T>::eq::u_eq(const T rho,
                           const T gamma)
 {
     assert(rho >= 0.0f);
+    
+    //std::cout<<" u_eq="<<u_max*(1-std::pow(rho, gamma))<<std::endl;
+    
     return u_max*(1.0 - std::pow(rho, gamma));
 }
 

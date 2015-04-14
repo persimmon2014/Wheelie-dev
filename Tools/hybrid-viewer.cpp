@@ -212,14 +212,15 @@ public:
                 for(size_t i = 0; i < l.N; ++i)
                 {
                     float val;
-                    if(drawfield == RHO)
+                    if(drawfield == RHO) // rho = occupied cell size / cell size
                         val = l.q[i].rho();
-                    else
+                    else // u is the velocity (not y), normalized by lane speed limit
                         val = arz<float>::eq::u(l.q[i].rho(),
                                                 l.q[i].y(),
                                                 l.parent->speedlimit,
                                                 sim->gamma)/l.parent->speedlimit;
-
+//  		    if(l.q[i].rho() > 0.0)
+//  		      std::cout<<"asdf"<<val<<std::endl;
                     blackbody(colors[i].data(), val);
                     colors[i][3] = 1.0f;
                 }
@@ -247,7 +248,7 @@ public:
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
                 glDisable(GL_LIGHTING);
                 glColor3f(0.9, 0.9, 1.0);
-                network_drawer.draw_lane_wire(l.parent->id);
+                //network_drawer.draw_lane_wire(l.parent->id);
 
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
                 glEnable(GL_LIGHTING);
@@ -529,10 +530,9 @@ int main(int argc, char *argv[])
     }
 
     //s.settle(0.033);
-
     s.convert_cars(hybrid::MACRO);
 
-    // weizi: remove all the cars, because the initial conditions have been set?
+    // weizi: remove all cars, because the initial conditions have been set?
     for(hybrid::lane &l: s.lanes)
     {
         if(l.is_macro())
