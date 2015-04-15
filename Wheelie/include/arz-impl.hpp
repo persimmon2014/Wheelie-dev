@@ -144,12 +144,16 @@ arz<T>::full_q::full_q(const q &__restrict__ o,
                        const T               gamma)
     : base(o)
 {
+    //std::cout<<base::rho()<<" "<<base::y()<<std::endl;
     u_eq_ = eq::u_eq(base::rho(), u_max, gamma);
     
     // if rho is 0 take the u_max, otherwise calculate u
     u_    = base::rho() <= std::numeric_limits<T>::epsilon() ? u_max :
             std::max(base::y()/base::rho() + u_eq_,
                      static_cast<T>(0));
+	    
+//std::cout<<base::y()/base::rho()<<" "<<u_eq_<<std::endl;
+	    
     assert(check());
 }
 

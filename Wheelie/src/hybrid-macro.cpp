@@ -109,16 +109,22 @@ namespace hybrid
             current_cars().push_back(sim.make_car(position,
                                                   velocity(position, sim.gamma),
                                                   0.0f));
+	    
+	    //std::cout<<velocity(position, sim.gamma)<<std::endl;
             current_cars().back().r = 0;
             current_cars().back().g = 0;
             current_cars().back().b = 1;
 
             while(1)
             {
-                ih_poisson_t ip_copy(ip);
+                ih_poisson_t ip_copy(ip); // store current ip to prevent the candidate will fail, in particular once ip.next() is executed, ip is advanced
                 candidate = ip.next();
-                if(candidate - current_cars().back().position*helper.end() >= sim.car_length)
+                
+		// if the candidate is OK
+		if(candidate - current_cars().back().position*helper.end() 
+		   >= sim.car_length)
                     break;
+		    
                 ip = ip_copy;
             }
         }
@@ -126,7 +132,7 @@ namespace hybrid
         //std::cout<<"Instantiate car number: "<<current_cars().size()<<std::endl;
     }
 
-    bool lane::macro_find_first(float &param, const simulator &sim) const
+    bool lane:: macro_find_first(float &param, const simulator &sim) const
     {
         typedef pproc::inhomogeneous_poisson<simulator::rand_gen_t, lane_poisson_helper> ih_poisson_t;
 
