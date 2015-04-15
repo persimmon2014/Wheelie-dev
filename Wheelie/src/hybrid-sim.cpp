@@ -445,6 +445,14 @@ namespace hybrid
     }
   }
 
+  
+  /**
+   * make a car
+   * @param position car real axle position / lane length
+   * @param velocity car velocity
+   * @param acceleration car acceleration
+   * @return the car instance
+   */
   car simulator::make_car(const float position, const float velocity,
                           const float acceleration)
   {

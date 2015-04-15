@@ -19,6 +19,7 @@ namespace hybrid
 
         float operator[](size_t idx) const
         {
+	    //std::cout<<"rho and scale: "<<q_[idx].rho()<<" "<<scale_<<std::endl;
             return q_[idx].rho()*scale_;
         }
 
@@ -31,7 +32,12 @@ namespace hybrid
         {
             return 0;
         }
-
+        
+        
+	/**
+	 * get number cells * cell size 
+	 * @return lane length
+	 */
         float end() const
         {
             return n()*dx();
@@ -95,7 +101,7 @@ namespace hybrid
         lane_poisson_helper helper(*this, 1.0f/sim.car_length);
         ih_poisson_t        ip(-sim.rear_bumper_offset(), helper, sim.uni); // -sim.rear_bumper_offset = 1
 
-        float candidate = ip.next();
+        float candidate = ip.next(); // car rear axle position
 
         while(candidate < helper.end()-sim.front_bumper_offset())
         {

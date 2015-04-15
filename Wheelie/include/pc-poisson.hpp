@@ -30,12 +30,17 @@ namespace pproc
 	 * @param in_pc lane_poisson_helper which includes cell size, number of cells, q for the entire lane and scale = 1/car_length
 	 * @param r random number generator
 	 */
-        inhomogeneous_poisson(const real_t in_start, const PC_T &in_pc, RAND *r) : t(in_start),
+        inhomogeneous_poisson(const real_t in_start, const PC_T &in_pc, RAND *r) : t(in_start), // weizi: seems wrong, why use rear_bumper_rear_axle as the first integrator
                                                                                    integrator(&in_pc),
                                                                                    arg(integrator.integrate(t)),
                                                                                    rand(r)
         {}
 
+        
+        /**
+	 * Find the next candidate position to instantialize a car
+	 * @return candidate position
+	 */
         real_t next()
         {
             const real_t u  = (*rand)();

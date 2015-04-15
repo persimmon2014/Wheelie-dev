@@ -87,11 +87,14 @@ namespace pproc
         /**
 	 * Sum cell lengths till x
 	 * @param x integration ending point
+	 * @return total number of cars
 	 */
         real_t integrate(const real_t x)
         {
             assert(x >= current_cell*pc->dx());  // current_cell is () returns the cell size
-
+	    
+	    //std::cout<<current_sum<<" "<<pc->dx()<<std::endl;
+	    
             while((current_cell+1)*pc->dx() < x)
             {
                 if(current_cell >= pc->n())
@@ -99,6 +102,8 @@ namespace pproc
 
                 current_sum += (*pc)[current_cell]*pc->dx();
                 ++current_cell;
+		
+		//std::cout<<current_cell<<" "<<pc->dx()<<" "<<current_sum<<std::endl;
             }
 
             /* i.e. if (current_cell < data.size())
@@ -109,9 +114,11 @@ namespace pproc
              * return current_sum + local*pc->inf();
              */
 
-            const real_t last  = (current_cell < pc->n()) ? (*pc)[current_cell] : pc->inf();
-            const real_t local = x - current_cell*pc->dx();
-            return current_sum + local*last;
+            const real_t last_cell_density  = (current_cell < pc->n()) ? (*pc)[current_cell] : pc->inf();
+            const real_t last_cell_coverage = x - current_cell*pc->dx();
+	    
+	    //std::cout<<"aa: "<<( current_sum + local*last)<<std::endl;
+            return current_sum + last_cell_coverage*last_cell_density;
         }
 
         real_t inv_integrate(const real_t v)
