@@ -24,22 +24,28 @@ namespace pproc
     {
         typedef typename PC_T::real_t real_t;
 
+	/**
+	 * initialize inhomogeneous poisson process
+	 * @param in_start rear_bumper_rear_axle (=1 for now)
+	 * @param in_pc lane_poisson_helper which includes cell size, number of cells, q for the entire lane and scale = 1/car_length
+	 * @param r random number generator
+	 */
         inhomogeneous_poisson(const real_t in_start, const PC_T &in_pc, RAND *r) : t(in_start),
                                                                                    integrator(&in_pc),
                                                                                    arg(integrator.integrate(t)),
                                                                                    rand(r)
-        {
-        }
+        {}
 
         real_t next()
         {
             const real_t u  = (*rand)();
-            const real_t e  = exp_rvar(u);
+            const real_t e  = exp_rvar(u); // return -log(u)
             arg            += e;
             t               = integrator.inv_integrate(arg);
             return t;
         }
 
+        // no use for now
         real_t next_trunc(const float trunc)
         {
             const real_t        u  = (*rand)();

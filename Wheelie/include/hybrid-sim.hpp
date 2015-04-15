@@ -315,7 +315,7 @@ namespace hybrid
 	 * Solve the riemann problem at boundaries
 	 * @param gamma the gamma value
 	 * @param inv_gamma the inverse gamma value
-	 * @return  maximum speed
+	 * @return  maximum speed of all cells at the current lane
 	 */
 	float collect_riemann(const float gamma, const float inv_gamma);
         

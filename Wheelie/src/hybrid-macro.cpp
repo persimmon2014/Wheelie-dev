@@ -42,10 +42,10 @@ namespace hybrid
             return n_;
         }
 
-        float          dx_;
-        size_t         n_;
-        arz<float>::q *q_;
-        float          scale_;
+        float          dx_; // cell size
+        size_t         n_; // number of cells
+        arz<float>::q *q_; // arz q
+        float          scale_; // 1.0f/sim.car_length
     };
 
     struct lane_poisson_helper_reverse
@@ -93,7 +93,7 @@ namespace hybrid
         current_cars().clear();
 
         lane_poisson_helper helper(*this, 1.0f/sim.car_length);
-        ih_poisson_t        ip(-sim.rear_bumper_offset(), helper, sim.uni);
+        ih_poisson_t        ip(-sim.rear_bumper_offset(), helper, sim.uni); // -sim.rear_bumper_offset = 1
 
         float candidate = ip.next();
 
@@ -116,6 +116,8 @@ namespace hybrid
                 ip = ip_copy;
             }
         }
+        
+        //std::cout<<"Instantiate car number: "<<current_cars().size()<<std::endl;
     }
 
     bool lane::macro_find_first(float &param, const simulator &sim) const
@@ -225,6 +227,8 @@ namespace hybrid
 
         float maxspeed = 0.0f;
         lane *upstream = upstream_lane();
+	
+	// if no upstream lane then calculate the starvation_riemann
         if(!upstream)
         {
 	    // deal with situations having no inflow
@@ -237,6 +241,7 @@ namespace hybrid
         }
         else
         {
+	    // if upstream lane is a fictitious lane, find the previous upstream lane
             if(upstream->fictitious)
             {
                 lane* next_upstream = upstream->upstream_lane();
@@ -245,10 +250,12 @@ namespace hybrid
                 upstream = next_upstream;
             }
 
+            // use the last cell q of the upstream lane to calculate the current q
             const arz<float>::full_q us_end(upstream->q[upstream->N-1],
                                             my_speedlimit,
                                             gamma);
 
+	    // if speedlimits of the upstream lane and current lane are the same
             if(upstream->speedlimit() == my_speedlimit)
                 rs[0].riemann(us_end,
                               *fq[0],
@@ -256,7 +263,7 @@ namespace hybrid
                               inv_speedlimit,
                               gamma,
                               inv_gamma);
-            else
+            else // speedlimits are not the same
                 rs[0].lebaque_inhomogeneous_riemann(us_end,
                                                     *fq[0],
                                                     upstream->speedlimit(),
@@ -355,8 +362,12 @@ namespace hybrid
         {
           q[i]     -= coefficient*(rs[i].right_fluctuation + rs[i+1].left_fluctuation);
           q[i].y() -= q[i].y()*coefficient*sim.relaxation_factor;
+	  
+	  //std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
+	  
           q[i].fix();
         }
+        
         lane *downstream = downstream_lane();
         if(downstream)
         {
@@ -458,7 +469,7 @@ namespace hybrid
 	    //std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
 	    //std::cout<<"Assign y for each lane: "<<q[i].rho()<<","<<q[i].y()<<","<<speedlimit()<<","<<gamma<<std::endl;
             q[i].fix();
-	    std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
+	    //std::cout<<"Cell "<<i<<" rho="<<q[i].rho()<<" y="<<q[i].y()<<std::endl;
         }
     }
 

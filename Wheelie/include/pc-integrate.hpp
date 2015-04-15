@@ -8,6 +8,7 @@
 #include <boost/foreach.hpp>
 #include "libhybrid-common.hpp"
 
+// poisson process
 namespace pproc
 {
     template <typename T>
@@ -64,12 +65,18 @@ namespace pproc
     {
         typedef typename PC_T::real_t real_t;
 
-        pc_integrator(const PC_T *in_pc) : pc(in_pc), current_cell(0), current_sum(0.0)
-        {}
+	/**
+	 * initialize poisson process integrator
+	 * @param in_pc lane_poisson_helper which includes cell size, number of cells, q for the entire lane and scale = 1/car_length
+	 */
+        pc_integrator(const PC_T *in_pc) : pc(in_pc), current_cell(0), current_sum(0.0) {}
 
+        /**
+	 * initialize poisson process integrator
+	 * @param o poisson process integrator
+	 */
         pc_integrator(const pc_integrator<PC_T> *o)
-            : pc(o.pc), current_cell(o.current_cell), current_sum(o.current_sum)
-        {}
+            : pc(o.pc), current_cell(o.current_cell), current_sum(o.current_sum) {}
 
         void reset()
         {
@@ -77,9 +84,13 @@ namespace pproc
             current_sum  = 0;
         }
 
+        /**
+	 * Sum cell lengths till x
+	 * @param x integration ending point
+	 */
         real_t integrate(const real_t x)
         {
-            assert(x >= current_cell*pc->dx());
+            assert(x >= current_cell*pc->dx());  // current_cell is () returns the cell size
 
             while((current_cell+1)*pc->dx() < x)
             {
@@ -117,7 +128,7 @@ namespace pproc
             return (v - current_sum)/denom + current_cell*pc->dx();
         }
 
-        const PC_T *pc;
+        const PC_T *pc; // lane_poisson_helper which includes cell size, number of cells, q for the entire lane and scale = 1/car_length
         size_t      current_cell;
         real_t      current_sum;
     };
