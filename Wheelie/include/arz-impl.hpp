@@ -312,6 +312,7 @@ inline void arz<T>::riemann_solution::riemann(const full_q &__restrict__ q_l,
                                               const T                    gamma,
                                               const T                    inv_gamma)
 {
+    // to calculate fq_0
     const full_q *fq_0;
     full_q        q_m;
 

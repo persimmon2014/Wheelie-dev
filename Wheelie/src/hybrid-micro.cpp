@@ -437,7 +437,7 @@ namespace hybrid
     void car::integrate(const float timestep, const lane& l, const float lane_width)
     {
         //Update position and velocity
-        velocity  = std::max(0.0f, velocity + acceleration * timestep);
+        velocity = std::max(0.0f, velocity + acceleration * timestep);
         position += (velocity * timestep) * l.inv_length;
 
         //Move car that is also a member of the other lane

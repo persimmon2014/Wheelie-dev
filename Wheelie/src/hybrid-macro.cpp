@@ -202,13 +202,17 @@ namespace hybrid
 
     float lane::velocity(const float pos, const float gamma) const
     {
+        // Instantiate the velocity of a car according to its pos and q of the current cell
         const int   cell  = which_cell(pos);
         const float local = pos*N - cell;
         assert(cell >= 0);
         assert(cell < static_cast<int>(N));
 
+	
+	// using q[cell], speedlimit and gamma to calculate u for the current cell
         const arz<float>::full_q q_c(q[cell], speedlimit(), gamma);
-        if(local < 0.5f)
+        
+	if(local < 0.5f)
         {
             if(cell == 0)
                 return q_c.u();
