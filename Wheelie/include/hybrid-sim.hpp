@@ -131,7 +131,7 @@ namespace hybrid
         // Color for drawing;
         float r, g, b;
 
-        // Parameters for microsim.
+        // Parameters for micro sim.
         float p_s1;
         float p_delta;
         float p_T;

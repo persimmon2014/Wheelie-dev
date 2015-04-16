@@ -1005,17 +1005,19 @@ namespace hybrid
     {
         for(lane &l: lanes)
         {
-            if (l.is_micro() && l.parent->active)
+            if (l.is_micro() && l.parent->active) {
+	      
                 l.compute_lane_accelerations(timestep, *this);
+	    }
         }
 
-        // BOOST_FOREACH(lane& l, lanes)
+        // for(lane& l: lanes)
         // {
         //   if (l.is_micro() and l.parent->active)
         //     l.compute_merges(timestep, *this);
         // }
 
-        // BOOST_FOREACH(lane& l, lanes)
+        // for(lane& l: lanes)
         // {
         //   if (l.active())
         //     l.car_swap();

@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     timer step_timer;
     while(1)
     {
+      //std::cout << "asdf" << num_steps<<std::endl;
         step_timer.reset();
         step_timer.start();
         float dt = s.hybrid_step();
@@ -60,8 +61,8 @@ int main(int argc, char *argv[])
         ++num_steps;
         step_timer.stop();
         total_time += step_timer.interval_S();
-        std::cout << "\r" << num_steps << " " << dt << " " << step_timer.interval_S() << " " << total_time/num_steps;
-        std::cout.flush();
+        //std::cout << "\r" << num_steps << " " << dt << " " << step_timer.interval_S() << " " << total_time/num_steps<<std::endl;
+        //std::cout.flush();
     }
     return 0;
 }

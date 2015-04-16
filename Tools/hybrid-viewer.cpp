@@ -538,6 +538,17 @@ int main(int argc, char *argv[])
         if(l.is_macro())
             l.current_cars().clear();
     }
+    
+//     hybrid::lane &l1 = s.get_lane_by_name("29416842_0"); // for ch-small.xml 29416842_0
+//     l1.convert_to_micro(s);
+	
+    
+//         for(hybrid::lane &l: s.lanes)
+//     {
+//         std::cout<<l.is_macro()<<std::endl;
+//     }
+// 	
+	
 
     fltkview mv(0, 0, 500, 500, "fltk View");
     mv.sim = &s;

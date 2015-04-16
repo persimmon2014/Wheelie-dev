@@ -64,7 +64,7 @@ struct big_image
         glScalef(1, -1, 1);
         //        std::cout << "Tiles : " << tiles.size() << std::endl;
 
-        BOOST_FOREACH(const tile &t, tiles)
+        for(const tile &t: tiles)
         {
             t.draw();
         }
@@ -73,7 +73,7 @@ struct big_image
 
     void free_textures()
     {
-        BOOST_FOREACH(tile &t, tiles)
+        for(tile &t: tiles)
         {
             t.free_texture();
         }
