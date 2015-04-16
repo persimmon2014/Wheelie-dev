@@ -204,6 +204,8 @@ namespace hybrid
     {
         // Instantiate the velocity of a car according to its pos and q of the current cell
         const int   cell  = which_cell(pos);
+	
+	// Local indicates the parametric car position at the current cell, 0-0.5 car is in the first half in the current cell, 0.5-1 car is in the second half of the cell.
         const float local = pos*N - cell;
         assert(cell >= 0);
         assert(cell < static_cast<int>(N));
