@@ -407,7 +407,10 @@ namespace hybrid
     {
         const float  min_for_free_movement = 1000;
 
-        if(l.parent->end->network_boundary())
+	// check to see if the current lane is terminated, if it has a lane_terminus or intersection_terminus return false otherwise yes
+        
+	// weizi: add ! sign, because I think if the current lane has no lane_terminus or intersection_terminus which means there is nothing comming next, should set the velocity to 0
+	if(!l.parent->end->network_boundary())
         {
             next_velocity = sim.boundary_conditions.get_vel_out(&l);
             distance = sim.boundary_conditions.get_dist_out(&l, sim.car_length);
@@ -420,7 +423,7 @@ namespace hybrid
 
         hwm::lane *hwm_downstream = l.parent->downstream_lane();
         next_velocity             = 0.0f;
-        distance                  = (1.0 - position) * l.length - sim.rear_bumper_rear_axle;
+        distance                  = (1.0 - position) * l.length - sim.rear_bumper_rear_axle; // distance = dist to lane end + car length
         if(hwm_downstream)
             hwm_downstream->user_data<lane>()->distance_to_car(distance, next_velocity, min_for_free_movement, sim);
     }
@@ -684,20 +687,27 @@ namespace hybrid
 
     void lane::micro_distance_to_car(float &distance, float &velocity, const float distance_max, const simulator &sim) const
     {
+        // this function is to calculate velocity and distance for the last car in the last lane in order to feed the IDM
+        // the current lane is the next lane for the last car
+      
+        // if there is no car in current lane
         if(current_cars().empty())
         {
-            distance += length;
-            if(distance >= distance_max)
+            distance += length; // add the lane length to the distance, which stored the value between the last car to the end of the last lane (including last car length)
+            if(distance >= distance_max) // distance_max is set to 1000
             {
                 velocity = 0.0f;
                 distance = distance_max;
             }
             else
             {
+	        // if before meeting the distance_max we meet a terminated lane
                 if(parent->end->network_boundary())
                 {
                     velocity = sim.boundary_conditions.get_vel_out(this);
-                    distance = sim.boundary_conditions.get_dist_out(this, sim.car_length);
+		    
+		    // weizi: why set distance like this? seems far less then previous distance + current lane length
+                    distance = sim.boundary_conditions.get_dist_out(this, sim.car_length); 
 
                     return;
                 }
@@ -711,6 +721,7 @@ namespace hybrid
         }
         else
         {
+	    // if there is a car in the current lane, then it's a leader return its velocity and distance
             velocity  = current_cars().front().velocity;
             distance += current_cars().front().position*length;
         }
@@ -867,8 +878,12 @@ namespace hybrid
 
     void lane::compute_lane_accelerations(const float timestep, const simulator &sim)
     {
+        // only for lanes that runs on micro simulation
         if(current_cars().empty())
             return;
+	
+	
+	//std::cout<<current_cars().size()<<std::endl;
 
         for(size_t i = 0; i < current_cars().size(); ++i)
         {
@@ -879,16 +894,24 @@ namespace hybrid
                                             current_car(i).velocity,
                                             (current_car(i+1).position
                                              - current_car(i).position)*length);
+		   
+		   
+		   //std::cout<<current_car(i).acceleration<<std::endl;
 
             }
             else
             {
-                // Set acceleration using simple relaxation.
-                float out_vel = sim.boundary_conditions.get_vel_out(this);
-                float _T = 400;
-                float vel = current_cars().back().velocity;
-                float relax =  (out_vel - vel) / _T;
+	       float out_vel;
+	       if(this->parent->end->network_boundary())
+		 out_vel = 0;
+	       else
+		 out_vel = sim.boundary_conditions.get_vel_out(this); // get the boundary out velocity
+	    	
+		float _T = 400; // set the relaxation factor
+                float vel = current_cars().back().velocity; // get the current car velocity
+                float relax =  (out_vel - vel) / _T; // calculate the relax
 
+                // Calculate the actual acceleration for the last car
                 current_cars().back().compute_intersection_acceleration(sim, *this);
 
                 // TODO should not need this.
@@ -898,9 +921,10 @@ namespace hybrid
                 }
             }
 
-            // //Check if there are cars still merging out of this lane.
+            // Check if there are cars still merging out of this lane.
             float right_param = current_car(i).position;
             hwm::lane* potential_right = parent->right_adjacency(right_param);
+	    	    
             lane* right_lane;
             float right_accel = 0;
             car next_r;
@@ -936,6 +960,8 @@ namespace hybrid
             if (potential_left and next_l.position > -1)
                 current_car(i).acceleration = std::min(current_car(i).acceleration, (float)left_accel);
         }
+        
+        std::cout<<"Finish compuitng lane accelerations"<<std::endl;
     }
 
     void lane::populate_density(const float density, const float init_vel, simulator &sim)

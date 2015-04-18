@@ -29,7 +29,7 @@ namespace hybrid
     {
       std::cerr << "Warning (get_dist_out): outbound not defined for " << lane_p << std::endl;
       assert(0);
-      distance = 18;
+      distance = 18; // 4 car length
     }
     return distance;
   }
@@ -281,13 +281,13 @@ namespace hybrid
   {
     switch(sim_type)
     {
-    case MICRO:
-      return micro_distance_to_car(distance, velocity, distance_max, sim);
-    case MACRO:
-      return macro_distance_to_car(distance, velocity, distance_max, sim);
-    default:
-      assert(0);
-      return;
+      case MICRO:
+	return micro_distance_to_car(distance, velocity, distance_max, sim);
+      case MACRO:
+	return macro_distance_to_car(distance, velocity, distance_max, sim);
+      default:
+	assert(0);
+	return;
     }
   }
 
@@ -760,11 +760,11 @@ namespace hybrid
           while(1)
           {
 
-              float sep_dist = boundary_conditions.get_dist_in(&l, car_length);
-              float vel      = boundary_conditions.get_vel_in(&l);
+            float sep_dist = boundary_conditions.get_dist_in(&l, car_length);
+            float vel      = boundary_conditions.get_vel_in(&l);
 
-              if (NOISE)
-              {
+            if (NOISE)
+            {
                   float sep_noise = l.next_noise * 2.5;
                   sep_dist += sep_noise;
                   float vel_noise = l.next_noise * 0;
@@ -774,12 +774,12 @@ namespace hybrid
 
                   sep_dist = std::max(sep_dist, min_dist);
                   sep_dist = std::min(sep_dist, sep_dist + (sep_dist - min_dist));
-              }
-              else
-              {
+            }
+            else
+            {
                 float min_dist = car_length + 1.0f + 0.1f*leader.velocity;
                 sep_dist = std::max(sep_dist, min_dist);
-              }
+            }
 
             free_dist -= sep_dist;
 

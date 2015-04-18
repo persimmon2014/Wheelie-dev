@@ -44,11 +44,13 @@ namespace hybrid
     {
         float density;
         float velocity;
+	
         boundary_flow(float in_den, float in_vel)
         {
             density = in_den;
             velocity = in_vel;
         }
+        
         boundary_flow()
         {
             density = -1;
@@ -56,19 +58,48 @@ namespace hybrid
         }
     };
 
+  
     struct boundaries
     {
         std::map<const lane*, boundary_flow> in_bounds;
         std::map<const lane*, boundary_flow> out_bounds;
 
+	/**
+	 * Calculate distance between cars (include one car length) according to outgoing boundary density
+	 * @param lane_p pointer to the lane
+	 * @param car_len car length
+	 * @return the distance between cars (include one car length)
+	 */
         float get_dist_out(const lane* lane_p, float car_len) const;
 
+	/**
+	 * Get the outgoing boundary velocity
+	 * @param lane_p pointer to the lane
+	 * @return the velocity
+	 */
         float get_vel_out(const lane* lane_p) const;
 
+	/**
+	 * Calculate distance between cars (include one car length) according to incoming boundary density
+	 * @param lane_p pointer to the lane
+	 * @param car_len car length
+	 * @return the distance between cars (include one car length)
+	 */
         float get_dist_in(const lane* lane_p, float car_len) const;
 
+	/**
+	 * Get the incoming boundary velocity
+	 * @param lane_p pointer to the lane
+	 * @return the velocity
+	 */
         float get_vel_in(const lane* lane_p) const;
 
+	/**
+	 * Calculate rate = (incoming density * incoming velocity) / car_length, if inbound not defined return warning message and rate = 0.5
+	 * @param lane_p pointer to the lane
+	 * @param car_length car length
+	 * @return the rate
+	 */
         float get_rate(const lane* lane_p, const float car_length) const;
 
     };
@@ -159,10 +190,20 @@ namespace hybrid
             float  theta;
         } other_lane_membership;
 
+	/**
+	 * Calculate car acceleration according to the agent-based model
+	 */
         float car_accel(const float leader_velocity, const float follower_velocity, float distance) const;
+	
+	/**
+	 * Find the distance between the last car to the lane end and the lane outgoing boundary velociy
+	 */
         void find_free_dist_and_vel(const lane& l, float& next_velocity, float& distance, const simulator& sim);
-        void compute_intersection_acceleration(const simulator &sim, const lane &l);
-        void integrate(float timestep, const lane &l, float lane_width);
+        
+	void compute_intersection_acceleration(const simulator &sim, const lane &l);
+        
+	
+	void integrate(float timestep, const lane &l, float lane_width);
         void carticle_integrate(float timestep, const lane &l, float lane_width);
         void check_if_valid_acceleration(lane& l, float timestep);
         car get_full_leader_from_all(const lane* l, const float param, const simulator& sim);
