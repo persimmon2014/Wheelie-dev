@@ -26,10 +26,18 @@ namespace hybrid
       distance = sep_dist;
     }
     else
-    {
+    {   
+      // TODO weizi: HARD CODE!!
+      float rear_bumper_rear_axle = 1;     
+      if(lane_p->parent->end->network_boundary())
+	distance = (1.0 - lane_p->current_cars().back().position) * lane_p->length - rear_bumper_rear_axle; 
+      else
+        distance = 18;
+      
+      
       std::cerr << "Warning (get_dist_out): outbound not defined for " << lane_p << std::endl;
-      assert(0);
-      distance = 18; // 4 car length
+      //assert(0);
+      //distance = 18; // 4 car length
     }
     return distance;
   }
@@ -44,9 +52,13 @@ namespace hybrid
     }
     else
     {
-      velocity = 25;
+      // weizi: newly added
+      if(lane_p->parent->end->network_boundary())
+	velocity = 0;
+      else
+        velocity = 25;
       std::cerr << "Warning (get_vel_out): outbound not defined for " << lane_p << std::endl;
-      assert(0);
+      //assert(0);
     }
     return velocity;
   }
@@ -70,7 +82,7 @@ namespace hybrid
     else
     {
       std::cerr << "Warning (get_dist_in): outbound not defined for " << lane_p << std::endl;
-      assert(0);
+      //assert(0);
       distance = 18;
     }
     return distance;
@@ -87,7 +99,7 @@ namespace hybrid
     else
     {
       std::cerr << "Warning: inbound not defined for " << lane_p << std::endl;
-      assert(0);
+      //assert(0);
       velocity = 26;
     }
     return velocity;

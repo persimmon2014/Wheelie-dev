@@ -43,8 +43,8 @@ set (EXTERNAL_LIBS
   /usr/lib/x86_64-linux-gnu/libGLU.so
   /usr/lib/x86_64-linux-gnu/libfltk.so
   /usr/lib/x86_64-linux-gnu/libfltk_gl.so
-  #/usr/lib/x86_64-linux-gnu/mesa/libGL.so
-  /usr/lib/nvidia-331/libGL.so
+  /usr/lib/x86_64-linux-gnu/mesa/libGL.so
+  #/usr/lib/nvidia-331/libGL.so
   )
 
 

@@ -409,8 +409,7 @@ namespace hybrid
 
 	// check to see if the current lane is terminated, if it has a lane_terminus or intersection_terminus return false otherwise yes
         
-	// weizi: add ! sign, because I think if the current lane has no lane_terminus or intersection_terminus which means there is nothing comming next, should set the velocity to 0
-	if(!l.parent->end->network_boundary())
+	if(l.parent->end->network_boundary())
         {
             next_velocity = sim.boundary_conditions.get_vel_out(&l);
             distance = sim.boundary_conditions.get_dist_out(&l, sim.car_length);
@@ -432,8 +431,8 @@ namespace hybrid
     {
         float next_velocity;
         float distance;
+	
         find_free_dist_and_vel(l, next_velocity, distance, sim);
-
         acceleration = car_accel(next_velocity, velocity, distance);
     }
 
@@ -901,12 +900,7 @@ namespace hybrid
             }
             else
             {
-	       float out_vel;
-	       if(this->parent->end->network_boundary())
-		 out_vel = 0;
-	       else
-		 out_vel = sim.boundary_conditions.get_vel_out(this); // get the boundary out velocity
-	    	
+		float out_vel = sim.boundary_conditions.get_vel_out(this); // get the boundary out velocity	    	
 		float _T = 400; // set the relaxation factor
                 float vel = current_cars().back().velocity; // get the current car velocity
                 float relax =  (out_vel - vel) / _T; // calculate the relax
